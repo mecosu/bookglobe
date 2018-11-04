@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title></title>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+    <div id="book-results">
+            <form id="form-search">
+                <input type="text" class="form-control" v-model="searchTerm" />
+                  <input
+                    type="submit" value="Search By Country"
+                    @click.prevent="searchBooks(searchTerm)"
+                  />
+            </form>
+            <ul>
+              <li v-for="book in displayBooks">
+               <span id="book-title">{{ book.title }}</span>  <!-- by {{ book.author_name[0] }} -->
+              </li>
+            </ul>
+    </div>
+    <div id="map-holder">
+        <script src="js/globe.js"></script>
+   </div>
+</body>
+</html>
