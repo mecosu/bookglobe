@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <title></title>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script src="http://d3js.org/queue.v1.min.js"></script>
@@ -12,7 +14,16 @@
 <link rel="stylesheet" href="styles/style.css" />
 </head>
 <body>
-    <script src="js/globe.js">
-    </script>
+<div id="mount-target">
+        <ul>
+            <li v-for="book in displayBooks">
+            <span id="book-title">{{ book.title }}</span>  <!-- by {{ book.author_name[0] }} -->
+            </li>
+        </ul>
+</div>
+<div id="globe-container">
+    <script src="js/globe.js"></script>
+</div>
+
 </body>
 </html>

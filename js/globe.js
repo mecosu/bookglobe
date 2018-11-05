@@ -1,3 +1,39 @@
+var bookMap = new Vue({
+	el: '#mount-target',
+	data: function() {
+		return {
+      displayBooks: [],
+      searchTerm: null,
+		};
+	},
+	methods: {
+    
+    searchBooks: function(searchTerm) {
+      const theVue = this; // change to arrow function?
+      console.log(`searching for books about the country "${searchTerm}"`);
+      const url = 'https://openlibrary.org/search.json?place=' + searchTerm + '&subject=fiction' + '&limit=1000'; //API has a limit of 1000 
+      console.log(url)
+      //function that takes the name of a state and returns an array of books from Open Library API
+      fetch(url)
+      .then(function(response) {
+      return response.json();
+        }).then(function(data) {
+        console.log(data); 
+        theVue.displayBooks = data.docs;
+        
+      });
+		
+    },
+    
+  },
+  
+	mounted: function () {
+		this.searchBooks();
+    },
+    
+});
+
+
 var width = 600,
 height = 500,
 sens = 0.25,
@@ -16,7 +52,7 @@ var path = d3.geo.path()
 
 //SVG container
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#globe-container").append("svg")
 .attr("width", width)
 .attr("height", height);
 
@@ -89,7 +125,10 @@ function ready(error, world, countryData) {
     .style("top", (d3.event.pageY - 15) + "px");
   })
   .on("click", function(d) {
-    console.log(countryById[d.id])
+    console.log(countryById[d.id]);
+    let countryName = countryById[d.id];
+    // searchBooks(countryName);
+    console.log(countryName);
     });
 };
 
