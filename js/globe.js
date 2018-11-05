@@ -2,28 +2,18 @@ var bookMap = new Vue({
 	el: '#mount-target',
 	data: function() {
 		return {
-      displayBooks: [],
-      searchTerm: null,
+      displayBooks: storeData.displayBooks,
+      searchTerm: storeData.searchTerm,
 		};
 	},
 	methods: {
     
-    searchBooks: function(searchTerm) {
+    displayResults: function(displayBooks) {
       const theVue = this; // change to arrow function?
-      console.log(`searching for books about the country "${searchTerm}"`);
-      const url = 'https://openlibrary.org/search.json?place=' + searchTerm + '&subject=fiction' + '&limit=1000'; //API has a limit of 1000 
-      console.log(url)
-      //function that takes the name of a state and returns an array of books from Open Library API
-      fetch(url)
-      .then(function(response) {
-      return response.json();
-        }).then(function(data) {
-        console.log(data); 
-        theVue.displayBooks = data.docs;
+      theVue = displayBooks;
         
-      });
+      },
 		
-    },
     
   },
   
@@ -33,16 +23,37 @@ var bookMap = new Vue({
     
 });
 
+var storeData =
+{
+  searchTerm: countryName,
+  displayBooks : []
+}
 
-var width = 600,
-height = 500,
+function searchBooks(countryName) {
+  const theVue = this; // change to arrow function?
+  console.log(`searching for books about the country "${searchTerm}"`);
+  const url = 'https://openlibrary.org/search.json?place=' + searchTerm + '&subject=fiction' + '&limit=1000'; //API has a limit of 1000 
+  console.log(url)
+  //function that takes the name of a state and returns an array of books from Open Library API
+  fetch(url)
+  .then(function(response) {
+  return response.json();
+    }).then(function(data) {
+    console.log(data); 
+    storeData.displayBooks = data.docs;
+    
+  });
+
+
+var width = 700,
+height = 700,
 sens = 0.25,
 focused;
 
 //Setting projection
 
 var projection = d3.geo.orthographic()
-.scale(245)
+.scale(300)
 .rotate([0, 0])
 .translate([width / 2, height / 2])
 .clipAngle(90);
@@ -129,6 +140,7 @@ function ready(error, world, countryData) {
     let countryName = countryById[d.id];
     // searchBooks(countryName);
     console.log(countryName);
+    searchBooks(countryName);
     });
 };
 
@@ -162,4 +174,5 @@ function ready(error, world, countryData) {
       if(cnt[i].id == sel.value) {return cnt[i];}
     };
 
+}
 };
