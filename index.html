@@ -14,16 +14,22 @@
 <link rel="stylesheet" href="styles/style.css" />
 </head>
 <body>
+<div id="globe-container"></div>
 <div id="mount-target">
+        <form id="form-search">
+                <input type="text" class="form-control" v-model="searchTerm" />
+                  <input
+                    type="submit" value="Search By Country"
+                    @click.prevent="searchBooks(searchTerm)"
+                  />
+            </form>
         <ul>
             <li v-for="book in displayBooks">
             <span id="book-title">{{ book.title }}</span>  <!-- by {{ book.author_name[0] }} -->
             </li>
         </ul>
 </div>
-<div id="globe-container">
-    <script src="js/globe.js"></script>
-</div>
 
+<script src="js/globe.js"></script>
 </body>
 </html>
