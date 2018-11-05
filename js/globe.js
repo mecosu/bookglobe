@@ -1,48 +1,52 @@
 var bookMap = new Vue({
-	el: '#mount-target',
-	data: function() {
-		return {
-      displayBooks: storeData.displayBooks,
-      searchTerm: storeData.searchTerm,
-		};
-	},
-	methods: {
+  el: '#mount-target',
+  data: function() {
+    return {
+      displayBooks: [],
+      searchTerm: null,
+    };
+  },
+  watch: {
+    'searchTerm': function (val, oldVal) {
+      console.log('new: %s, old: %s', val, oldVal)
+      this.searchBooks(this.searchTerm);
+    }
+  },
+  methods: {
     
-    displayResults: function(displayBooks) {
+    searchBooks: function(searchTerm) {
       const theVue = this; // change to arrow function?
-      theVue = displayBooks;
+      console.log(searchTerm);
+      console.log(`searching for books about the country "${searchTerm}"`);
+      const url = 'https://openlibrary.org/search.json?place=' + searchTerm + '&subject=fiction' + '&limit=1000'; //API has a limit of 1000 
+      console.log(url)
+      //function that takes the name of a country and returns an array of books from Open Library API
+      fetch(url)
+      .then(function(response) {
+      return response.json();
+        }).then(function(data) {
+        console.log(data); 
+        theVue.displayBooks = data.docs;
         
-      },
-		
+      });
+    
+    },
+
+    // generateGoodreadsUrl: function(book) {
+    //   const goodreadsUrl = "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
+    //   return goodreadsUrl;
+    //   },
+    // imageUrl: function(book) {
+    //   return baseImageUrl = 'http://covers.openlibrary.org/b/ISBN/' + book.isbn[0] + '-M.jpg';
+    // },
     
   },
   
-	mounted: function () {
-		this.searchBooks();
+  mounted: function () {
+    this.searchBooks();
     },
     
-});
-
-var storeData =
-{
-  searchTerm: countryName,
-  displayBooks : []
-}
-
-function searchBooks(countryName) {
-  const theVue = this; // change to arrow function?
-  console.log(`searching for books about the country "${searchTerm}"`);
-  const url = 'https://openlibrary.org/search.json?place=' + searchTerm + '&subject=fiction' + '&limit=1000'; //API has a limit of 1000 
-  console.log(url)
-  //function that takes the name of a state and returns an array of books from Open Library API
-  fetch(url)
-  .then(function(response) {
-  return response.json();
-    }).then(function(data) {
-    console.log(data); 
-    storeData.displayBooks = data.docs;
-    
-  });
+}); 
 
 
 var width = 700,
@@ -50,25 +54,22 @@ height = 700,
 sens = 0.25,
 focused;
 
-//Setting projection
-
-var projection = d3.geo.orthographic()
+//Setting Globe Projection
+var projection = d3.geoOrthographic()
 .scale(300)
 .rotate([0, 0])
 .translate([width / 2, height / 2])
 .clipAngle(90);
 
-var path = d3.geo.path()
+var path = d3.geoPath()
 .projection(projection);
 
-//SVG container
-
+//Create the SVG Container
 var svg = d3.select("#globe-container").append("svg")
 .attr("width", width)
 .attr("height", height);
 
-//Adding water
-
+//Filling in Water on Globe
 svg.append("path")
 .datum({type: "Sphere"})
 .attr("class", "water")
@@ -83,15 +84,13 @@ queue()
 .defer(d3.tsv, "data/world-country-names.tsv")
 .await(ready);
 
-//Main function
 
 function ready(error, world, countryData) {
 
   var countryById = {},
   countries = topojson.feature(world, world.objects.countries).features;
 
-  //Adding countries to select
-
+  //Adding Countries to List
   countryData.forEach(function(d) {
     countryById[d.id] = d.name;
     option = countryList.append("option");
@@ -99,16 +98,14 @@ function ready(error, world, countryData) {
     option.property("value", d.id);
   });
 
-  //Drawing countries on the globe
-
+  //Countries
   var world = svg.selectAll("path.land")
   .data(countries)
   .enter().append("path")
   .attr("class", "land")
   .attr("d", path)
 
-  //Drag event
-
+  //Drag Event
   .call(d3.behavior.drag()
     .origin(function() { var r = projection.rotate(); return {x: r[0] / sens, y: -r[1] / sens}; })
     .on("drag", function() {
@@ -118,8 +115,7 @@ function ready(error, world, countryData) {
       svg.selectAll(".focused").classed("focused", focused = false);
     }))
 
-  //Mouse events
-
+  //Hover & Click Events
   .on("mouseover", function(d) {
     countryTooltip.text(countryById[d.id])
     .style("left", (d3.event.pageX + 7) + "px")
@@ -136,25 +132,21 @@ function ready(error, world, countryData) {
     .style("top", (d3.event.pageY - 15) + "px");
   })
   .on("click", function(d) {
-    console.log(countryById[d.id]);
+    // console.log(countryById[d.id]);
     let countryName = countryById[d.id];
     // searchBooks(countryName);
     console.log(countryName);
-    searchBooks(countryName);
+    // searchBooks(countryName);
+
+    
+    bookMap.searchTerm = countryName;
+    console.log(bookMap.searchTerm);
+
     });
 };
 
-  //Country focus on option select
 
-  d3.select("select").on("change", function() {
-    var rotate = projection.rotate(),
-    focusedCountry = country(countries, this),
-    p = d3.geo.centroid(focusedCountry);
-
-    svg.selectAll(".focused").classed("focused", focused = false);
-
-  //Globe rotating
-
+  //Rotate Globe
   (function transition() {
     d3.transition()
     .duration(2500)
@@ -166,13 +158,12 @@ function ready(error, world, countryData) {
         .classed("focused", function(d, i) { return d.id == focusedCountry.id ? focused = d : false; });
       };
     })
-    })();
-  });
+    });
+
 
   function country(cnt, sel) { 
     for(var i = 0, l = cnt.length; i < l; i++) {
       if(cnt[i].id == sel.value) {return cnt[i];}
     };
 
-}
 };

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 <title></title>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
@@ -12,24 +12,27 @@
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
 <link rel="stylesheet" href="styles/style.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-<div id="globe-container"></div>
+<div id="globe-container">
+</div>
 <div id="mount-target">
-        <form id="form-search">
-                <input type="text" class="form-control" v-model="searchTerm" />
-                  <input
-                    type="submit" value="Search By Country"
-                    @click.prevent="searchBooks(searchTerm)"
-                  />
-            </form>
-        <ul>
-            <li v-for="book in displayResults">
-            <span id="book-title">{{ book.title }}</span>  <!-- by {{ book.author_name[0] }} -->
+        <ul class="list-inline">
+            <li v-for="book in displayBooks" class="panel panel-default">
+                <div class="panel-heading">
+                    <h6> {{ book.title }} </h6>
+                </div>
+                <div class="panel-body">
+                    <!-- <img class="img-responsive" :src="imageUrl(book)" /> -->
+                    <button>
+                        Link to buy
+                    </button>
+                </div>
+            <!-- <span id="book-title">{{ book.title }}</span>  by {{ book.author_name[0] }} -->
             </li>
         </ul>
 </div>
-
 <script src="js/globe.js"></script>
 </body>
 </html>

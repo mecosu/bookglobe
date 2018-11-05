@@ -1,15 +1,19 @@
+.body {
+  background-color: rgb(180, 178, 178);
+}
+
 .water {
-  fill: rgb(53, 95, 223);
+  fill: rgb(4, 21, 73);
 }
 
 .land {
   fill: rgb(0, 0, 0);
-  stroke: #FFF;
+  stroke: rgb(180, 178, 178);
   stroke-width: 0.7px;
 }
 
 .land:hover {
-  fill:rgb(255, 255, 255);
+  fill:rgb(180, 178, 178);
   stroke-width: 1px;
 }
 
@@ -37,4 +41,9 @@ select {
   color: rgb(0, 0, 0);
   font-size: 14px;
   font-family: sans-serif;
+}
+
+.book-title {
+  text-decoration: underline;
+  text-transform: uppercase;
 }
