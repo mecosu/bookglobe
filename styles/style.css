@@ -1,5 +1,5 @@
 .body {
-  background-color: rgb(180, 178, 178);
+  background-color: rgb(192, 192, 192);
 }
 
 .water {
@@ -7,28 +7,16 @@
 }
 
 .land {
-  fill: rgb(0, 0, 0);
-  stroke: rgb(180, 178, 178);
+  fill: rgb(22, 102, 44);
+  stroke: rgb(52, 141, 76);
   stroke-width: 0.7px;
 }
 
 .land:hover {
-  fill:rgb(180, 178, 178);
+  fill:rgb(52, 141, 76);
   stroke-width: 1px;
 }
 
-.focused {
-  fill: rgb(255, 255, 255);
-}
-
-select {
-  position: absolute;
-  top: 20px;
-  left: 580px;
-  border: solid #ccc 1px;
-  padding: 3px;
-  box-shadow: inset 1px 1px 2px #ddd8dc;
-}
 
 .countryTooltip {
   position: absolute;
