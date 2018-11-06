@@ -30,7 +30,7 @@
                     <h6> {{ book.title }} </h6>
                 </div>
                 <div class="panel-body">
-                    <!-- <img class="img-responsive" :src="imageUrl(book)" /> -->
+                    <img v-if="imageUrl(book)" class="img-responsive" :src="imageUrl(book)" /> 
                     <button>
                         Link to buy
                     </button>
