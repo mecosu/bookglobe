@@ -36,9 +36,14 @@ var bookMap = new Vue({
     //   const goodreadsUrl = "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
     //   return goodreadsUrl;
     //   },
-    // imageUrl: function(book) {
-    //   return baseImageUrl = 'http://covers.openlibrary.org/b/ISBN/' + book.isbn[0] + '-M.jpg';
-    // },
+    imageUrl: function(book) {
+      if (book.isbn == undefined) {
+      return '';
+      }
+      else {
+      return baseImageUrl = 'http://covers.openlibrary.org/b/ISBN/' + book.isbn[0] + '-M.jpg';
+      }
+    },
     
   },
   
