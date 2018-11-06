@@ -48,19 +48,46 @@ var bookMap = new Vue({
         }
         else {
           return "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
-          window.open(
-            goodreadsUrl, '_blank'
-          );
         }
     },
 
       imageUrl: function(book) {
-      if (book.isbn == undefined) {
-      return '';
+      if (book.cover_i == undefined) {
+        if (book.cover_edition_key == undefined) {
+          if (book.isbn == undefined) {
+            if (book.id_goodreads == undefined) {
+              if (book.id_librarything == undefined) {
+                if (book.oclc == undefined) {
+                  if (book.lccn == undefined) {
+                    return ''
+                    }
+                  else { 
+                    return 'https://covers.openlibrary.org/b/lccn/' + book.lccn[0] + '-M.jpg';
+                  } 
+                }
+                else {
+                  return 'https://covers.openlibrary.org/b/oclc/' + book.oclc[0] + '-M.jpg';
+                }
+              }
+              else {
+                return 'https://covers.openlibrary.org/b/librarything/' + book.id_librarything[0] + '-M.jpg';
+              }
+            }
+            else {
+              return 'https://covers.openlibrary.org/b/goodreads/' + book.id_goodreads[0] + '-M.jpg';
+            }
+          }
+          else {
+            return 'https://covers.openlibrary.org/b/ISBN/' + book.isbn[0] + '-M.jpg';
+          }
+        }
+        else {
+          return 'https://covers.openlibrary.org/b/olid/' + book.cover_edition_key + '-M.jpg'; 
+        }
       }
       else {
-      return baseImageUrl = 'https://covers.openlibrary.org/b/ISBN/' + book.isbn[0] + '-M.jpg';
-      }
+        return 'https://covers.openlibrary.org/b/id/' + book.cover_i + '-M.jpg'; 
+        }
     },
 
       getAuthorName: function(book) {
