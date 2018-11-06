@@ -59,7 +59,7 @@ var bookMap = new Vue({
       return '';
       }
       else {
-      return baseImageUrl = 'http://covers.openlibrary.org/b/ISBN/' + book.isbn[0] + '-M.jpg';
+      return baseImageUrl = 'https://covers.openlibrary.org/b/ISBN/' + book.isbn[0] + '-M.jpg';
       }
     },
 
