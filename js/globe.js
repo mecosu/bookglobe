@@ -32,11 +32,29 @@ var bookMap = new Vue({
     
     },
 
-    // generateGoodreadsUrl: function(book) {
-    //   const goodreadsUrl = "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
-    //   return goodreadsUrl;
-    //   },
-    imageUrl: function(book) {
+      // generateGoodreadsUrl: function(book) {
+      //   if (book.id_goodreads == undefined) {
+      //     return '';
+      //   }
+      //   else {
+      //     const goodreadsUrl = "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
+      //     return goodreadsUrl; 
+      //   }
+      // },
+
+      gotoGoodreads: function(book) {
+        if (book.id_goodreads == undefined) {
+          return '';
+        }
+        else {
+          const goodreadsUrl = "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
+          window.open(
+            goodreadsUrl, '_blank'
+          );
+        }
+    },
+
+      imageUrl: function(book) {
       if (book.isbn == undefined) {
       return '';
       }
@@ -44,6 +62,16 @@ var bookMap = new Vue({
       return baseImageUrl = 'http://covers.openlibrary.org/b/ISBN/' + book.isbn[0] + '-M.jpg';
       }
     },
+
+      getAuthorName: function(book) {
+        if (book.author_name == undefined) {
+          return '';
+        }
+        else {
+          authorName = book.author_name[0];
+          return authorName;
+        }
+      }
     
   },
   

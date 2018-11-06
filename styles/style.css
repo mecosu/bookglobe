@@ -1,5 +1,5 @@
 .body {
-  background-color: rgb(192, 192, 192);
+  background-color: rgb(0, 0, 0);
 }
 
 .water {
@@ -31,7 +31,15 @@
   font-family: sans-serif;
 }
 
-.book-title {
-  text-decoration: underline;
+#book-title {
   text-transform: uppercase;
+}
+
+.img-responsive {
+  height: 175x;
+}
+
+#book-card {
+  height: 350px;
+  width: 200px;
 }

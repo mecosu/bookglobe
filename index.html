@@ -5,9 +5,9 @@
 <title></title>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
-<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
@@ -26,16 +26,18 @@
 <div id="mount-target">
         <ul class="list-inline">
             <li v-for="book in displayBooks" class="panel panel-default">
-                <div class="panel-heading">
-                    <h6> {{ book.title }} </h6>
-                </div>
-                <div class="panel-body">
+                <div id="book-card">
+                    <div class="panel-heading">
+                        <h4 id="book-title"> {{ book.title }} </h4>
+                        <p v-if="getAuthorName(book)"> {{ getAuthorName(book) }} </p>
+                    </div>
+                    <div class="panel-body">
                     <img v-if="imageUrl(book)" class="img-responsive" :src="imageUrl(book)" /> 
-                    <button>
-                        Link to buy
+                    <button v-if="gotoGoodreads(book) !== ''" v-on:click="gotoGoodreads(book)">
+                        View on Goodreads
                     </button>
+                    </div>
                 </div>
-            <!-- <span id="book-title">{{ book.title }}</span>  by {{ book.author_name[0] }} -->
             </li>
         </ul>
 </div>
