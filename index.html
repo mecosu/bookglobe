@@ -12,19 +12,17 @@
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
 <link rel="stylesheet" href="styles/style.css" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> 
 </head>
 <body>
-<div class="container-fluid main-content">
-<div class="row">
-<section class="col-md-6">
+
+
 <div id="globe-container">
 </div>
-</section>
 
-<section class="col-md-7" id="section-browse"></section>
+
 <div id="mount-target">
-        <ul class="list-inline">
+        <ul class="megan-list-inline">
             <li v-for="book in displayBooks" class="panel panel-default">
                 <div id="book-card">
                     <div class="panel-heading">
@@ -33,16 +31,17 @@
                     </div>
                     <div class="panel-body">
                     <img v-if="imageUrl(book)" class="img-responsive" :src="imageUrl(book)" /> 
-                    <button v-if="gotoGoodreads(book) !== ''" v-on:click="gotoGoodreads(book)">
-                        View on Goodreads
-                    </button>
+                    <a class="btn" v-if="gotoGoodreads(book) !== ''" :href="gotoGoodreads(book)" target="_blank">
+                        <button>
+                            View on Goodreads
+                        </button>
+                    </a>
                     </div>
                 </div>
             </li>
         </ul>
 </div>
-</div>
-</div>
+
 <script src="js/globe.js"></script>
 </body>
 </html>

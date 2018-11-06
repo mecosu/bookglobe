@@ -1,5 +1,6 @@
-.body {
+body {
   background-color: rgb(0, 0, 0);
+  display: flex;
 }
 
 .water {
@@ -36,10 +37,31 @@
 }
 
 .img-responsive {
-  height: 175x;
+  height: 150x;
 }
 
 #book-card {
-  height: 350px;
+  height: 450px;
   width: 200px;
+}
+
+#globe-container {
+  width: 50vw;
+}
+
+#mount-target {
+  width: 50vw;
+}
+.megan-list-inline {
+  /*
+  remove  dot for each list item.
+  use inline-flex display
+  flex-wrap should be on
+  width should be 50vw again*/
+  display: inline-flex;
+  list-style: none;
+  width: 50vw;
+  flex-wrap: wrap;
+  height: 98vh;
+  overflow: scroll;
 }

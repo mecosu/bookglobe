@@ -47,7 +47,7 @@ var bookMap = new Vue({
           return '';
         }
         else {
-          const goodreadsUrl = "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
+          return "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
           window.open(
             goodreadsUrl, '_blank'
           );
