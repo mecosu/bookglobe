@@ -6,13 +6,16 @@ var bookMap = new Vue({
       searchTerm: null,
     };
   },
-  watch: {
+  watch: { //check to see if search term has changed & update results
     'searchTerm': function (val, oldVal) {
       console.log('new: %s, old: %s', val, oldVal)
       this.searchBooks(this.searchTerm);
     }
   },
   methods: {
+
+    //Take country name & use Open Library API to search for books
+    // tagged w/ that place
     
     searchBooks: function(searchTerm) {
       const theVue = this; // change to arrow function?
@@ -32,15 +35,7 @@ var bookMap = new Vue({
     
     },
 
-      // generateGoodreadsUrl: function(book) {
-      //   if (book.id_goodreads == undefined) {
-      //     return '';
-      //   }
-      //   else {
-      //     const goodreadsUrl = "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
-      //     return goodreadsUrl; 
-      //   }
-      // },
+    // link to book page on Goodreads.com
 
       gotoGoodreads: function(book) {
         if (book.id_goodreads == undefined) {
@@ -50,6 +45,9 @@ var bookMap = new Vue({
           return "https://www.goodreads.com/book/show/" + book.id_goodreads[0];
         }
     },
+
+    // Show the cover image for each book if available & check 
+    // all possible sources before returning no image
 
       imageUrl: function(book) {
       if (book.cover_i == undefined) {
@@ -90,6 +88,8 @@ var bookMap = new Vue({
         }
     },
 
+    //Include author name with results if available
+
       getAuthorName: function(book) {
         if (book.author_name == undefined) {
           return '';
@@ -111,12 +111,12 @@ var bookMap = new Vue({
 
 var width = 700,
 height = 700,
-sens = 0.25,
+sens = 0.5, //globe sensitivity
 focused;
 
 //Setting Globe Projection
 var projection = d3.geoOrthographic()
-.scale(300)
+.scale(290)
 .rotate([0, 0])
 .translate([width / 2, height / 2])
 .clipAngle(90);
@@ -133,10 +133,20 @@ var svg = d3.select("#globe-container").append("svg")
 svg.append("path")
 .datum({type: "Sphere"})
 .attr("class", "water")
-.attr("d", path);
+.attr("d", path)
+.call(d3.behavior.drag()
+  .origin(function() { var r = projection.rotate(); return {x: r[0] / sens, y: -r[1] / sens}; })
+  
+// Drag event (water): can rotate when dragging on both water and land
+.on("drag", function() { 
+  var rotate = projection.rotate();
+  projection.rotate([d3.event.x * sens, -d3.event.y * sens, rotate[2]]);
+  svg.selectAll("path.land").attr("d", path);
+  svg.selectAll(".focused").classed("focused", focused = false);
+}))
 
 var countryTooltip = d3.select("body").append("div").attr("class", "countryTooltip"),
-countryList = d3.select("header").append("select").attr("name", "countries");
+countryList = d3.select("head").append("select").attr("name", "countries");
 
 
 queue()
@@ -165,7 +175,7 @@ function ready(error, world, countryData) {
   .attr("class", "land")
   .attr("d", path)
 
-  //Drag Event
+  //Drag Event (Land)
   .call(d3.behavior.drag()
     .origin(function() { var r = projection.rotate(); return {x: r[0] / sens, y: -r[1] / sens}; })
     .on("drag", function() {
@@ -192,19 +202,12 @@ function ready(error, world, countryData) {
     .style("top", (d3.event.pageY - 15) + "px");
   })
   .on("click", function(d) {
-    // console.log(countryById[d.id]);
     let countryName = countryById[d.id];
-    // searchBooks(countryName);
-    console.log(countryName);
-    // searchBooks(countryName);
-
-    
+    //console.log(countryName);
     bookMap.searchTerm = countryName;
-    console.log(bookMap.searchTerm);
-
+    //console.log(bookMap.searchTerm)
     });
 };
-
 
   //Rotate Globe
   (function transition() {
