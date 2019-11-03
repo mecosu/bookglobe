@@ -108,15 +108,14 @@ var bookMap = new Vue({
     
 }); 
 
-
-var width = 700,
-height = 700,
+var width = window.innerWidth,
+height = window.innerHeight,
 sens = 0.5, //globe sensitivity
 focused;
 
 //Setting Globe Projection
 var projection = d3.geoOrthographic()
-.scale(290)
+.scale(150)
 .rotate([0, 0])
 .translate([width / 2, height / 2])
 .clipAngle(90);
@@ -148,12 +147,10 @@ svg.append("path")
 var countryTooltip = d3.select("body").append("div").attr("class", "countryTooltip"),
 countryList = d3.select("head").append("select").attr("name", "countries");
 
-
 queue()
 .defer(d3.json, "data/world-110m.json")
 .defer(d3.tsv, "data/world-country-names.tsv")
 .await(ready);
-
 
 function ready(error, world, countryData) {
 
@@ -228,5 +225,4 @@ function ready(error, world, countryData) {
     for(var i = 0, l = cnt.length; i < l; i++) {
       if(cnt[i].id == sel.value) {return cnt[i];}
     };
-
 };
